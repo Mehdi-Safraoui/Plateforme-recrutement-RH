@@ -12,7 +12,7 @@ checkDuplicateEmail = (req, res, next) => {
   }).then(user => {
     if (user) {
       res.status(400).send({
-        message: "Failed! This email is already in use!"
+        message: "Email déjà utilisé !"
       });
       return;
     }
@@ -32,13 +32,22 @@ checkDuplicateNumber = (req, res, next) => {
   }).then(user => {
     if (user) {
       res.status(400).send({
-        message: "Failed! This Phone number is already in use!"
+        message: "Numero de telephone déjà utilisé !"
       });
       return;
     }
     next();
   });
 }
+
+checkPhoneNumberLength = (req, res, next) => {
+  if (req.body.number.length !== 8) {
+    return res.status(400).send({
+      message: "Le numero doit étre composé de 8 numéros !"
+    });
+  }
+  next();
+};
 
 
 checkRolesExisted = (req, res, next) => {
@@ -59,6 +68,7 @@ checkRolesExisted = (req, res, next) => {
 const verifySignUp = {
   checkDuplicateEmail: checkDuplicateEmail,
   checkDuplicateNumber: checkDuplicateNumber,
+  checkPhoneNumberLength: checkPhoneNumberLength,
   checkRolesExisted: checkRolesExisted
 };
 

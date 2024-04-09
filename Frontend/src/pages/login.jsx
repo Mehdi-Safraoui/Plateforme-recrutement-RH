@@ -7,8 +7,8 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const password = e.target.password.value;
     const email = e.target.email.value;
+    const password = e.target.password.value;
 
     authService.login(email,password)
   }

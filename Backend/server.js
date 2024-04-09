@@ -3,12 +3,11 @@ const cors = require("cors");
 
 const app = express();
 
-var corsOptions = {
-  origin: "http://localhost:8081"
-};
-
-app.use(cors(corsOptions));
-
+app.use(cors({
+  origin: "http://localhost:5173", // Autorise uniquement les requêtes provenant de cette origine
+  methods: "GET,POST", // Spécifiez les méthodes HTTP autorisées
+  allowedHeaders: "Content-Type,Authorization", // Spécifiez les en-têtes autorisés
+}));
 // parse requests of content-type - application/json
 app.use(express.json());
 

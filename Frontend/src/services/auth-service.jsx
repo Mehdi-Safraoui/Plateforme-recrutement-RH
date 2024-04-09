@@ -1,42 +1,29 @@
 import axios from "axios";
-import react from "react";
 
-const API_URL = "http://localhost:8000/api/auth/"
+const API_URL = "http://localhost:8000/api/auth/";
 
-class authService{
+class authService {
+  async login(email, password) {
+    return await axios
+      .post(API_URL + "login", {
+        email,
+        password,
+      })
+      .then((response) => {
+        if (response.data.accessToken) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+        }
+        return response.data;
+      });
+  }
 
-    login(email,password) {
-        return axios 
-         .post(API_URL + "login",{
-            email,
-            password
-         })
-         .then(response => {
-            if (response.data.accessToken){
-                localStorage.setItem("user",JSON.stringify(response.data))
-            }
-            return response.data
-         })
-    }
+  logout() {
+    localStorage.removeItem("user");
+  }
 
-    logout(){
-        localStorage.removeItem("user")
-    }
-
-    register(email,password,name,surname,number,city){
-        return axios.post(API_URL + "signup", {
-            email,
-            password,
-            name,
-            surname,
-            number,
-            city
-        })
-    }
-
-    getCurrentUser() {
-        return JSON.parse(localStorage.getItem('user'))
-    }
+  getCurrentUser() {
+    return JSON.parse(localStorage.getItem("user"));
+  }
 }
 
-export default new authService()
+export default new authService();

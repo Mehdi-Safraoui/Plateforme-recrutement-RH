@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
-import authService from "../services/auth-service";
 import isEmail from "validator/lib/isEmail";
+import axios from "axios";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -24,7 +24,7 @@ export default function SignUp() {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const password = e.target.password.value;
     const email = e.target.email.value;
@@ -40,25 +40,27 @@ export default function SignUp() {
     } else {
       setConfirmPasswordError("");
     }
-    if (!confirmPasswordError && !emailError) {
-      console.log
-      ({ 
-        email,
-        password,
-        name,
-        surname,
-        number,
-        city,
-      })
-      authService.register(
-            email,
-            password,
-            name,
-            surname,
-            number,
-            city
-      )
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/signup",
+        {
+          email,
+          password,
+          name,
+          surname,
+          number,
+          city,
+        }
+      );
+      console.log(response.data); // Afficher la réponse du serveur
+      // Traitez la réponse du serveur ou redirigez l'utilisateur vers une autre page si nécessaire
+    } catch (error) {
+      console.error("Erreur lors de la requête:", error.response.data.message);
+      setEmailError(error.response.data.message);
+      // Affichez un message d'erreur à l'utilisateur ou faites autre chose pour gérer l'erreur
     }
+
   };
 
   return (
@@ -87,14 +89,14 @@ export default function SignUp() {
         </div>
         <div className="relative z-0 w-full mb-5 group">
           <input
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             name="password"
             id="password"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             required
             value={password}
-            onChange={(e) => setPassword(e.target.value)} 
+            onChange={(e) => setPassword(e.target.value)}
           />
           <label
             htmlFor="password"
