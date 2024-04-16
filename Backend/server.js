@@ -3,11 +3,7 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(cors({
-  origin: "http://localhost:5173", // Autorise uniquement les requêtes provenant de cette origine
-  methods: "GET,POST", // Spécifiez les méthodes HTTP autorisées
-  allowedHeaders: "Content-Type,Authorization", // Spécifiez les en-têtes autorisés
-}));
+app.use(cors());
 // parse requests of content-type - application/json
 app.use(express.json());
 
@@ -20,10 +16,10 @@ const Role = db.role;
 
 // db.sequelize.sync();
 // force: true will drop the table if it already exists
-db.sequelize.sync({force: true}).then(() => {
-  console.log('Drop and Resync Database with { force: true }');
-  initial();
-});
+// db.sequelize.sync({force: true}).then(() => {
+//   console.log('Drop and Resync Database with { force: true }');
+//   initial();
+// });
 
 // simple route
 app.get("/", (req, res) => {
