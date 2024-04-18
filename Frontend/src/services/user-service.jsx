@@ -1,7 +1,7 @@
 import authHeader from "./auth-header";
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api/test/"
+const API_URL = "http://localhost:8080/api/test/"
 
 class userService{
     getPublicContent(){
@@ -13,7 +13,7 @@ class userService{
     }
 
     getRhBoard(){
-        return axios.get(API_URL + 'rh' , { headers:authHeader() })
+        return axios.get(API_URL + 'mod' , { headers:authHeader() })
     }
 
     getAdminBoard(){

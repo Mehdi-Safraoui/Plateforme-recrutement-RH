@@ -1,5 +1,8 @@
-import React , { useState } from "react";
+import React, { useState } from "react";
 import authService from "../services/auth-service";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,12 +13,29 @@ export default function Login() {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    authService.login(email,password)
-  }
+    authService
+      .login(email, password)
+      .then((response) => {
+        toast.success("Connexion réussie !", {
+          position: "top-right",
+          pauseOnHover: true,
+          theme: "dark",
+        });
+        // Autres actions après une connexion réussie, par exemple, redirection
+      })
+      .catch((error) => {
+        // Afficher une notification en cas d'erreur
+        toast.error("Veuillez vérifier votre email et votre mot de passe!", {
+          position: "top-right",
+          pauseOnHover: true,
+          theme: "dark",
+        });
+      });
+  };
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="max-w-sm mx-auto">
+      <form onSubmit={handleSubmit} className="max-w-sm mx-auto mt-20">
         <div className="mb-5">
           <label
             htmlFor="email"
@@ -57,6 +77,7 @@ export default function Login() {
           Submit
         </button>
       </form>
+      <ToastContainer />
     </>
   );
 }

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import isEmail from "validator/lib/isEmail";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -30,15 +32,23 @@ export default function SignUp() {
     const email = e.target.email.value;
     const confirmPassword = e.target.repeat_password.value;
 
+    let valid = true;
+
     if (!isEmail(email)) {
       setEmailError("Email invalide");
+      valid = false; // Set valid to false if the email is not valid
     } else {
       setEmailError("");
     }
     if (confirmPassword !== password) {
       setConfirmPasswordError("Les mots de passe ne correspondent pas");
+      valid = false; // Set valid to false if passwords do not match
     } else {
       setConfirmPasswordError("");
+    }
+
+    if (!valid) {
+      return; // Stop the form submission if there are validation errors
     }
 
     try {
@@ -54,18 +64,31 @@ export default function SignUp() {
         }
       );
       console.log(response.data); // Afficher la réponse du serveur
+      toast.success("Utilisateur créé avec succès !", {
+        position: "top-right",
+        pauseOnHover: true,
+        theme: "dark",
+      });
       // Traitez la réponse du serveur ou redirigez l'utilisateur vers une autre page si nécessaire
     } catch (error) {
       console.error("Erreur lors de la requête:", error.response.data.message);
       setEmailError(error.response.data.message);
-      // Affichez un message d'erreur à l'utilisateur ou faites autre chose pour gérer l'erreur
+      toast.error(
+        "Erreur lors de la création de l'utilisateur: " +
+          error.response.data.message,
+        {
+          position: "top-right",
+          pauseOnHover: true,
+          theme: "dark",
+        }
+      );
+      // Affichez un message d'erreur à l'utilisateur
     }
-
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+      <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-20">
         <div className="relative z-0 w-full mb-5 group">
           <input
             type="email"
@@ -222,6 +245,7 @@ export default function SignUp() {
           Submit
         </button>
       </form>
+      <ToastContainer />
     </>
   );
 }

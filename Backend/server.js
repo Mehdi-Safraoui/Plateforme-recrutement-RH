@@ -16,7 +16,7 @@ const Role = db.role;
 
 // db.sequelize.sync();
 // force: true will drop the table if it already exists
-// db.sequelize.sync({force: true}).then(() => {
+// db.sequelize.sync({ force: true }).then(() => {
 //   console.log('Drop and Resync Database with { force: true }');
 //   initial();
 // });
@@ -41,12 +41,12 @@ function initial() {
     id: 1,
     name: "candidat"
   });
- 
+
   Role.create({
     id: 2,
     name: "rh"
   });
- 
+
   Role.create({
     id: 3,
     name: "admin"

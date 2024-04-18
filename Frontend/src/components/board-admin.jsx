@@ -13,18 +13,31 @@ export default class adminBoard extends Component{
 
     componentDidMount(){
         userService.getAdminBoard().then(
-            response => {
-                this.setState({
-                    content: response.data
-                })
+            (response) => {
+              this.setState({
+                content: response.data,
+              });
             },
-            error => {
+            (error) => {
+              this.setState({
                 content:
-                (error.response &&
+                  (error.response &&
                     error.response.data &&
-                    error.response.data.message) || 
-                    error.message ||
-                    error.toString()
-            })
-    }
+                    error.response.data.message) ||
+                  error.message ||
+                  error.toString(),
+              });
+            }
+          );
+        }
+      
+        render() {
+          return (
+            <div className="container">
+              <header>
+                <h3>{this.state.content}</h3>
+              </header>
+            </div>
+          );
+        }
 }
