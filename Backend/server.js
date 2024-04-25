@@ -20,15 +20,17 @@ const Role = db.role;
 //   console.log('Drop and Resync Database with { force: true }');
 //   initial();
 // });
-
+const emploiRoutes = require("./app/routes/emploi.routes");
+app.use("/api/emploi", emploiRoutes);
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to our application." });
 });
 
 // routes
-require('./app/routes/auth.routes')(app);
-require('./app/routes/user.routes')(app);
+app.use(require('./app/routes/auth.routes'));
+app.use(require('./app/routes/user.routes'));
+app.use(require('./app/routes/emploi.routes'));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
