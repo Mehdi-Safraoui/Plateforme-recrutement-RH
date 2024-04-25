@@ -1,32 +1,24 @@
-const { authJwt } = require("../middleware");
+const express = require("express");
+const router = express.Router();
 const controller = require("../controllers/user.controller");
 
-module.exports = function(app) {
-  app.use(function(req, res, next) {
-    res.header(
-      "Access-Control-Allow-Headers",
-      "x-access-token, Origin, Content-Type, Accept"
-    );
-    next();
-  });
-
-  app.get("/api/test/all", controller.allAccess);
-
-  app.get(
-    "/api/test/user",
-    [authJwt.verifyToken],
-    controller.userBoard
+// Middleware pour définir les en-têtes CORS
+router.use(function(req, res, next) {
+  res.header(
+    "Access-Control-Allow-Headers",
+    "x-access-token, Origin, Content-Type, Accept"
   );
+  next();
+});
 
-  app.get(
-    "/api/test/mod",
-    [authJwt.verifyToken, authJwt.isRh],
-    controller.rhBoard
-  );
+// Routes
+router.get("/api/test/all", controller.allAccess);
 
-  app.get(
-    "/api/test/admin",
-    [authJwt.verifyToken, authJwt.isAdmin],
-    controller.adminBoard
-  );
-};
+router.get("/api/test/user", controller.userBoard);
+
+router.get("/api/test/rhboard", controller.RhBoard); // Correction de la méthode à appeler
+
+router.get("/api/test/admin", controller.adminBoard);
+
+module.exports = router;
+
