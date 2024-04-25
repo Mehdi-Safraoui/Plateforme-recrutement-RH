@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import axios from "axios";
 
 export default class JobForm extends PureComponent {
   constructor(props) {
@@ -16,9 +17,32 @@ export default class JobForm extends PureComponent {
     });
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
-    this.props.onSubmit(this.state);
+    const { jobName, jobDescription } = this.state;
+  
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/emploi",
+        {
+          jobName,
+          jobDescription
+        }
+      );
+  
+      if (response.status >= 200 && response.status < 300) { // Vérifiez si le statut de la réponse est dans la plage des codes de statut de succès
+        console.log('Emploi soumis avec succès !');
+        // Réinitialiser les champs du formulaire après soumission réussie
+        this.setState({
+          jobName: '',
+          jobDescription: '',
+        });
+      } else {
+        console.error('Une erreur s\'est produite lors de la soumission de l\'emploi.');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la soumission de l\'emploi :', error);
+    }
   };
 
   render() {
