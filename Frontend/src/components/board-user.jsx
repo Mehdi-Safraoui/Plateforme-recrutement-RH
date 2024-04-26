@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import userService from "../services/user-service";
 
-export default class userBoard extends Component {
+export default class UserBoard extends Component {
   constructor(props) {
     super(props);
 
@@ -33,6 +34,9 @@ export default class userBoard extends Component {
   render() {
     return (
       <div className="container">
+        <nav className="flex justify-center mb-4">
+          <Link to="/jobs" className="mr-4 font-bold">Offres d'emploi</Link>
+        </nav>
         <header>
           <h3>{this.state.content}</h3>
         </header>
@@ -40,3 +44,4 @@ export default class userBoard extends Component {
     );
   }
 }
+
