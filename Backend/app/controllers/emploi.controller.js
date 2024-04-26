@@ -1,4 +1,4 @@
-const db = require("../models") ;
+const db = require("../models");
 const Emploi = db.emploi;
 
 exports.createEmploi = (req, res) => {
@@ -12,5 +12,15 @@ exports.createEmploi = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({ message: "Une erreur s'est produite lors de la création de l'emploi.", error: err.message });
+    });
+};
+
+exports.getEmplois = (req, res) => {
+  Emploi.findAll()
+    .then(emplois => {
+      res.status(200).send(emplois);
+    })
+    .catch(err => {
+      res.status(500).send({ message: "Une erreur s'est produite lors de la récupération des emplois.", error: err.message });
     });
 };
