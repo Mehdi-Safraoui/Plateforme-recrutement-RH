@@ -1,33 +1,34 @@
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/navbar";
+import Home from "./pages/home";
 import Login from "./pages/login";
 import SignUp from "./pages/signup";
-import Home from "./pages/home";
-import Navbar from "./components/navbar";
-import Profile from "./pages/profile"
+import Profile from "./pages/profile";
 import UserBoard from "./components/board-user";
 import AdminBoard from "./components/board-admin";
 import RhBoard from "./components/board-rh";
-
-import { BrowserRouter as Router ,Routes, Route } from "react-router-dom";
+import Jobs from "./pages/jobs";
 
 export default function App() {
   return (
-    <>
+    <Router>
       <div className="navbar">
-        <Router>
-          <Navbar />
-          <main className="form-signing">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/user" element={<UserBoard />} />
-              <Route path="/adminboard" element={<AdminBoard />} />
-              <Route path="/rhboard" element={<RhBoard />} />
-            </Routes>
-          </main>
-        </Router>
+        <Navbar />
       </div>
-    </>
+      <main className="form-signing">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/user" element={<UserBoard />} />
+          <Route path="/adminboard" element={<AdminBoard />} />
+          <Route path="/rhboard" element={<RhBoard />} />
+          <Route path="/jobs" element={<Jobs />} /> 
+        </Routes>
+      </main>
+    </Router>
   );
 }
+
