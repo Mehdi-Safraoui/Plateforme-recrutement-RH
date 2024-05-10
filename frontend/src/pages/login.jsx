@@ -20,6 +20,10 @@ export default function Login() {
           pauseOnHover: true,
           theme: "dark",
         });
+        setTimeout(() => {
+          window.location.reload()
+
+        }, 2000);
         // Autres actions après une connexion réussie, par exemple, redirection
       })
       .catch((error) => {
@@ -35,7 +39,7 @@ export default function Login() {
   return (
     <>
       <form onSubmit={handleSubmit} className="max-w-sm mx-auto mt-20">
-        <div class="mb-5">
+        <div className="mb-5">
           <label
             htmlFor="email"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white focus:outline-none hover:text-blue-600"
@@ -54,7 +58,7 @@ export default function Login() {
           />
         </div>
 
-        <div class="mb-5">
+        <div className="mb-5">
           <label
             htmlFor="password"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white focus:outline-none hover:text-blue-600"
@@ -72,6 +76,7 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        {/* <a target="_blank" href="http://localhost:8080/assets/1715340374423-846875051-Koussay-B%C3%83%C2%A8jaoui.pdf"> open cv </a> */}
 
         <button
           type="submit"

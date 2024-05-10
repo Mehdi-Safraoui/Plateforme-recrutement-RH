@@ -9,9 +9,10 @@ const storage = multer.diskStorage({
     cb(null, "uploads/"); // Dossier de destination des fichiers téléchargés
   },
   filename: (req, file, cb) => {
+    console.log(file);
     // Générer un nom de fichier unique
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniqueSuffix);
+    cb(null,uniqueSuffix +"-"+ file.originalname  );
   },
 });
 

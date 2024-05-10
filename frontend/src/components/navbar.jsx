@@ -10,6 +10,7 @@ export default class Navbar extends Component {
     this.state = {
       showRhBoard: false,
       showAdminBoard: false,
+      showUserBoard: false,
       currentUser: undefined,
     };
   }
@@ -20,6 +21,7 @@ export default class Navbar extends Component {
     if (user) {
       this.setState({
         currentUser: authService.getCurrentUser(),
+        showUserBoard:user.roles.includes("ROLE_CANDIDAT"),
         showRhBoard: user.roles.includes("ROLE_RH"),
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
       });
@@ -28,10 +30,11 @@ export default class Navbar extends Component {
 
   logOut() {
     authService.logout();
+    window.location.reload()
   }
 
   render() {
-    const { currentUser, showRhBoard, showAdminBoard } = this.state;
+    const { currentUser,showUserBoard, showRhBoard, showAdminBoard } = this.state;
     return (
       <nav className="bg-white border-gray-200 dark:bg-gray-900">
         <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
@@ -74,7 +77,7 @@ export default class Navbar extends Component {
                 <Link to="/adminboard">Espace Admin</Link>
               </div>
             )}
-            {currentUser && (
+            {showUserBoard && (
               <div className="text-lg mt-1">
                 <Link to="/user">Espace utilisateur</Link>
               </div>

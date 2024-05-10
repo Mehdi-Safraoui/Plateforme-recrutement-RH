@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const path = require('path');
 
 app.use(cors());
 app.use(express.json());
@@ -26,6 +27,24 @@ app.use("/api/user", userRoutes);
 app.use("/api/emploi", emploiRoutes);
 app.use("/api/offre", offreRoutes)
 
+const UPLOADS_DIR = path.join(__dirname, 'uploads');
+
+app.get('/assets/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(UPLOADS_DIR, filename);
+
+  // Check if the file exists
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      // File does not exist
+      return res.status(404).send('File not found');
+    }
+
+    // File exists, so stream it to the response
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
+  });
+});
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
@@ -66,6 +85,7 @@ app.use((err, req, res, next) => {
   res.status(500).send('Une erreur interne est survenue!');
 });
 const fs = require('fs');
+const { clearScreenDown } = require("readline");
 
 // Vérifier si le dossier "uploads" existe
 const uploadDir = './uploads';
