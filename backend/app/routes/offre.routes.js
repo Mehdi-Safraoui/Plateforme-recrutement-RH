@@ -1,7 +1,6 @@
-
 const express = require("express");
 const router = express.Router();
-const multer = require("multer"); 
+const multer = require("multer");
 const Controller = require("../controllers/offre.controller");
 
 const storage = multer.diskStorage({
@@ -12,7 +11,7 @@ const storage = multer.diskStorage({
     console.log(file);
     // Générer un nom de fichier unique
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null,uniqueSuffix +"-"+ file.originalname  );
+    cb(null, uniqueSuffix + "-" + file.originalname);
   },
 });
 

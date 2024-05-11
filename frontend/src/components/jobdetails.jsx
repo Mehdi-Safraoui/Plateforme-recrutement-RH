@@ -48,6 +48,8 @@ const JobDetails = () => {
       formDataToSend.append("ville", formData.ville);
       formDataToSend.append("message", formData.message);
       formDataToSend.append("cv", formData.cv);
+      formDataToSend.append("emploiId", emploi.id);
+
 
       await axios.post(`http://localhost:8080/api/offre`, formDataToSend, {
         headers: {

@@ -1,11 +1,16 @@
-// offre.controller.js
-
 const db = require("../models");
 const Offre = db.offres;
+const Emploi = db.emplois;
 
 exports.createOffre = async (req, res) => {
   try {
-    // Vérifier si toutes les données du formulaire sont présentes
+    // Récupérer l'identifiant de l'emploi soumis dans le formulaire
+    const emploiId = req.body.emploiId;
+
+    // Récupérer le jobName associé à cet emploi à partir de la table "emplois"
+    const emploi = await Emploi.findByPk(emploiId);
+    const jobName =  emploi.jobName ;
+
     const { email, first_name, last_name, phone, ville, message } = req.body;
     if (!email || !first_name || !last_name || !phone || !ville || !message || !req.file) {
       return res.status(400).send({
@@ -21,7 +26,8 @@ exports.createOffre = async (req, res) => {
       phone,
       ville,
       message,
-      cv: req.file.path, // Chemin vers le fichier CV
+      cv: req.file.path,
+      jobName,
     };
 
     // Enregistrer l'offre dans la base de données
@@ -36,3 +42,4 @@ exports.createOffre = async (req, res) => {
     });
   }
 };
+
