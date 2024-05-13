@@ -17,6 +17,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// Route pour récupérer la liste des candidats
+router.get("/candidates", Controller.getCandidates);
+
+
 // Route pour la création d'une offre avec téléchargement de fichier
 router.post("/", upload.single("cv"), Controller.createOffre);
 

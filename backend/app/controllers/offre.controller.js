@@ -1,6 +1,19 @@
+// offre.controller.js
 const db = require("../models");
 const Offre = db.offres;
 const Emploi = db.emplois;
+
+exports.getCandidates = async (req, res) => {
+  try {
+    const candidates = await Offre.findAll();
+    res.status(200).send(candidates);
+  } catch (error) {
+    console.error("Error fetching candidates:", error);
+    res.status(500).send({
+      message: "An error occurred while fetching candidates.",
+    });
+  }
+};
 
 exports.createOffre = async (req, res) => {
   try {
@@ -9,10 +22,10 @@ exports.createOffre = async (req, res) => {
 
     // Récupérer le jobName associé à cet emploi à partir de la table "emplois"
     const emploi = await Emploi.findByPk(emploiId);
-    const jobName =  emploi.jobName ;
+    const jobName = emploi.jobName;
 
-    const { email, first_name, last_name, phone, ville, message } = req.body;
-    if (!email || !first_name || !last_name || !phone || !ville || !message || !req.file) {
+    const { email, first_name, last_name, phone, ville, cv } = req.body;
+    if (!email || !first_name || !last_name || !phone || !ville || !cv || !req.file) {
       return res.status(400).send({
         message: "Tous les champs du formulaire sont obligatoires.",
       });

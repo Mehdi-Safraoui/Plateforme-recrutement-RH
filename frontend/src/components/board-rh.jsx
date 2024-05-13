@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import userService from "../services/user-service";
 import JobForm from "./jobform";
+import CandidateList from "./candidateList";
 
 const RhBoard = () => {
   const [content, setContent] = useState("");
@@ -28,7 +29,7 @@ const RhBoard = () => {
   };
 
   return (
-    <div className="container flex flex-row space-x-32">
+    <div className="container flex flex-row space-x-24">
       <header>
         <aside
           id="logo-sidebar"
@@ -104,7 +105,7 @@ const RhBoard = () => {
       </header>
       <div className="pt-5">
         <div>{showForm == 1 && <JobForm onSubmit={handleFormSubmit} />}</div>
-        <div>{showForm == 2 && "2"}</div>
+        <div>{showForm == 2 && <CandidateList />}</div>
         <div>{showForm == 3 && "3"}</div>
       </div>
     </div>
