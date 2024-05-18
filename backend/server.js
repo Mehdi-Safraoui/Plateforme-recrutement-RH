@@ -17,6 +17,8 @@ const authRoutes = require('./app/routes/auth.routes');
 const userRoutes = require('./app/routes/user.routes');
 const emploiRoutes = require('./app/routes/emploi.routes');
 const offreRoutes = require('./app/routes/offre.routes');
+const emailRoutes = require('./app/routes/email.routes');
+
 
 app.get("/", (req , res) => {
   res.json({ message: "Welcome to our application." });
@@ -26,6 +28,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes); 
 app.use("/api/emploi", emploiRoutes);
 app.use("/api/offre", offreRoutes)
+app.use('/api/email', emailRoutes);
+
 
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
 
@@ -50,6 +54,7 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
 
 // db.sequelize.sync();
 // force: true will drop the table if it already exists

@@ -24,8 +24,8 @@ exports.createOffre = async (req, res) => {
     const emploi = await Emploi.findByPk(emploiId);
     const jobName = emploi.jobName;
 
-    const { email, first_name, last_name, phone, ville, cv } = req.body;
-    if (!email || !first_name || !last_name || !phone || !ville || !cv || !req.file) {
+    const { email, first_name, last_name, phone, ville, message, etat } = req.body;
+    if (!email || !first_name || !last_name || !phone || !ville || !message || !req.file || !etat ) {
       return res.status(400).send({
         message: "Tous les champs du formulaire sont obligatoires.",
       });
@@ -41,6 +41,8 @@ exports.createOffre = async (req, res) => {
       message,
       cv: req.file.path,
       jobName,
+      etat,
+    
     };
 
     // Enregistrer l'offre dans la base de données
@@ -53,6 +55,42 @@ exports.createOffre = async (req, res) => {
     res.status(500).send({
       message: "Une erreur s'est produite lors de la création de l'offre.",
     });
+  }
+};
+
+exports.acceptCandidate = async (req, res) => {
+  try {
+    const candidateId = req.params.id;
+    const candidate = await Offre.findByPk(candidateId);
+
+    if (!candidate) {
+      return res.status(404).send({ message: 'Candidate not found' });
+    }
+
+    candidate.etat = 'Accepted';
+    await candidate.save();
+    
+    res.send({ message: 'Candidate accepted successfully' });
+  } catch (error) {
+    res.status(500).send({ message: 'Error accepting candidate', error });
+  }
+};
+
+exports.rejectCandidate = async (req, res) => {
+  try {
+    const candidateId = req.params.id;
+    const candidate = await Offre.findByPk(candidateId);
+
+    if (!candidate) {
+      return res.status(404).send({ message: 'Candidate not found' });
+    }
+
+    candidate.etat = 'Rejected';
+    await candidate.save();
+
+    res.send({ message: 'Candidate rejected successfully' });
+  } catch (error) {
+    res.status(500).send({ message: 'Error rejecting candidate', error });
   }
 };
 

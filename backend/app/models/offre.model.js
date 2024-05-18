@@ -33,6 +33,12 @@ const Offre = sequelize.define("offres", {
     type: Sequelize.STRING,
           allowNull: true
   },
+etat: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    defaultValue: 'Non traité' // Default value set here
+  }
+
  
 });
 

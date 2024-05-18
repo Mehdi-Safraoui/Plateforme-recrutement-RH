@@ -24,4 +24,9 @@ router.get("/candidates", Controller.getCandidates);
 // Route pour la création d'une offre avec téléchargement de fichier
 router.post("/", upload.single("cv"), Controller.createOffre);
 
+router.put('/candidates/:id/accept', Controller.acceptCandidate);
+
+// Route to reject a candidate
+router.put('/candidates/:id/reject', Controller.rejectCandidate);
+
 module.exports = router;

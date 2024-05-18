@@ -2,7 +2,7 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.users; // Utilisez db.users au lieu de db.user
 const Role = db.roles; 
-
+const { acceptEmail } = require("../nodemailer");
 const Op = db.Sequelize.Op;
 
 var jwt = require("jsonwebtoken");
@@ -39,7 +39,11 @@ exports.signup = (req, res) => {
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
+    acceptEmail(User.email);
 };
+
+
+
 
 exports.signin = (req, res) => {
   User.findOne({

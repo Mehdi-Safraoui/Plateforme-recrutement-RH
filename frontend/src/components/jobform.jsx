@@ -52,7 +52,7 @@ export default class JobForm extends PureComponent {
 
   render() {
     return (
-      <div className="max-w-xl mx-auto p-4 bg-white shadow-md rounded-lg">
+      <div className="max-w-xl mx-auto p-4 bg-white shadow-md rounded-lg ml-32">
         <ToastContainer />
         <form onSubmit={this.handleSubmit} className="space-y-4">
           <div>

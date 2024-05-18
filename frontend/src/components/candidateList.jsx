@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const CandidateList = () => {
   const [candidates, setCandidates] = useState([]);
@@ -16,9 +19,71 @@ const CandidateList = () => {
       });
   }, []);
 
+  const handleAccept = (candidateId, candidateEmail) => {
+    // Mise à jour du candidat dans la base de données pour le marquer comme accepté
+    axios
+      .put(`http://localhost:8080/api/offre/candidates/${candidateId}/accept`)
+      .then(() => {
+        // Envoi de l'e-mail au candidat avec le contenu HTML construit
+        axios
+          .post("http://localhost:8080/api/email/send-email", {
+            to: candidateEmail,
+            subject: "Confirmation de candidature",
+            html:
+              '<h2>Bonjour</h2><p>Félicitations! Votre candidature a été acceptée.</p>',
+          })
+          .then(() => {
+            console.log("Email sent successfully");
+            // Affichage de la notification Toastify
+            toast.success("Email envoyé avec succès", {
+              position: "top-right",
+              pauseOnHover: true,
+              theme: "dark",
+            });
+            // Mise à jour de l'état du candidat dans le frontend
+            setCandidates((prevCandidates) =>
+              prevCandidates.map((candidate) => {
+                if (candidate.id === candidateId) {
+                  return { ...candidate, etat: "Accepted" };
+                }
+                return candidate;
+              })
+            );
+          })
+          .catch((error) => {
+            console.error("Error sending email:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error accepting candidate:", error);
+      });
+  };
+  
+
+  const handleReject = (candidateId) => {
+    axios
+      .put(`http://localhost:8080/api/offre/candidates/${candidateId}/reject`)
+      .then((response) => {
+        // Update candidates state to reflect the change
+        setCandidates((prevCandidates) =>
+          prevCandidates.map((candidate) => {
+            if (candidate.id === candidateId) {
+              return { ...candidate, etat: "Rejected" };
+            }
+            return candidate;
+          })
+        );
+      })
+      .catch((error) => {
+        console.error("Error rejecting candidate:", error);
+      });
+  };
+
   return (
+    <>
+      <ToastContainer />
     <div className="container mx-auto">
-      <div className="overflow-x-auto mt-12">
+      <div className="overflow-x-auto mt-6 ml-6">
         <table className="table-auto w-full border-2 border-black">
           <thead>
             <tr>
@@ -41,8 +106,8 @@ const CandidateList = () => {
                 <td className="border-2 border-black px-4 py-2">{candidate.email}</td>
                 <td className="border-2 border-black px-4 py-2">{candidate.jobName}</td>
                 <td className="border-2 border-black px-4 py-2 text-white text-xs">
-                  <div className="bg-blue-700 px-2 py-1 rounded">
-                    {candidate.status || "Non traité"}
+                  <div className={`px-2 py-1 rounded ${candidate.etat === 'Accepted' ? 'bg-green-500' : candidate.etat === 'Rejected' ? 'bg-red-500' : 'bg-blue-700'}`}>
+                    {candidate.etat || "Non traité"}
                   </div>
                 </td>
                 <td className="border-2 border-black px-4 py-2">
@@ -68,11 +133,14 @@ const CandidateList = () => {
                     <>
                       <button
                         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 rounded w-25"
+                        onClick={() => handleAccept(candidate.id , candidate.email)}
                       >
                         Accepter
                       </button>
                       <button
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2 w-30"
+                        onClick={() => handleReject(candidate.id)}
+
                       >
                         Rejeter
                       </button>
@@ -85,6 +153,7 @@ const CandidateList = () => {
         </table>
       </div>
     </div>
+    </>
   );
 };
 

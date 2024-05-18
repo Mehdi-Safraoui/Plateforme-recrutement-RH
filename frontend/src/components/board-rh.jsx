@@ -29,7 +29,7 @@ const RhBoard = () => {
   };
 
   return (
-    <div className="container flex flex-row space-x-24">
+    <div className="container flex flex-row">
       <header>
         <aside
           id="logo-sidebar"

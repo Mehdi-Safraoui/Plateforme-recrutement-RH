@@ -1,4 +1,4 @@
-const db = require("../models");
+const db = require("../models"); 
 const Emploi = db.emplois;
 
 exports.createEmploi = (req, res) => {
