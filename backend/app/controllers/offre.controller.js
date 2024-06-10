@@ -1,7 +1,10 @@
-// offre.controller.js
 const db = require("../models");
 const Offre = db.offres;
 const Emploi = db.emplois;
+const User = db.users;
+const { calculateCvScore } = require('../controllers/cv.controller');
+
+// Mettre à jour l'offre avec le score calculé
 
 exports.getCandidates = async (req, res) => {
   try {
@@ -19,13 +22,15 @@ exports.createOffre = async (req, res) => {
   try {
     // Récupérer l'identifiant de l'emploi soumis dans le formulaire
     const emploiId = req.body.emploiId;
+    const userId = req.body.iduser;
 
     // Récupérer le jobName associé à cet emploi à partir de la table "emplois"
     const emploi = await Emploi.findByPk(emploiId);
     const jobName = emploi.jobName;
+    const user = await User.findByPk(userId);
 
-    const { email, first_name, last_name, phone, ville, message, etat } = req.body;
-    if (!email || !first_name || !last_name || !phone || !ville || !message || !req.file || !etat ) {
+    const { email, first_name, last_name, phone, ville, message, etat  } = req.body;
+    if (!email || !first_name || !last_name || !phone || !ville || !message || !req.file  || !etat ) {
       return res.status(400).send({
         message: "Tous les champs du formulaire sont obligatoires.",
       });
@@ -33,6 +38,8 @@ exports.createOffre = async (req, res) => {
 
     // Créer une nouvelle offre avec les données du formulaire
     const nouvelleOffre = {
+      iduser: user.id ,
+      idemploi: emploi.id,
       email,
       first_name,
       last_name,
@@ -40,6 +47,7 @@ exports.createOffre = async (req, res) => {
       ville,
       message,
       cv: req.file.path,
+      score : 0,
       jobName,
       etat,
     
@@ -47,6 +55,14 @@ exports.createOffre = async (req, res) => {
 
     // Enregistrer l'offre dans la base de données
     const offreCree = await Offre.create(nouvelleOffre);
+
+    // Appeler la fonction de calcul de score et attendre le score
+    const { cvScore } = await calculateCvScore(req); // Retirer res de l'appel
+
+    // Mettre à jour l'offre avec le score calculé
+    offreCree.score = cvScore; // Utiliser cvScore du retour de calculateCvScore
+    await offreCree.save();
+
 
     // Répondre avec l'offre créée
     res.status(201).send(offreCree);
@@ -93,4 +109,3 @@ exports.rejectCandidate = async (req, res) => {
     res.status(500).send({ message: 'Error rejecting candidate', error });
   }
 };
-

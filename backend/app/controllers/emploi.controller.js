@@ -4,7 +4,8 @@ const Emploi = db.emplois;
 exports.createEmploi = (req, res) => {
   Emploi.create({
     jobName: req.body.jobName,
-    jobDescription: req.body.jobDescription
+    jobDescription: req.body.jobDescription,
+    motsclés : req.body.motsclés
   })
     .then(emploi => {
       res.status(201).send({ message: "L'emploi a été créé avec succès.", emploi });

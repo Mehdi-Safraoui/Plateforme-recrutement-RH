@@ -9,6 +9,11 @@ export default class JobForm extends PureComponent {
     this.state = {
       jobName: "",
       jobDescription: "",
+      motsclés: [
+        {
+          
+        },
+      ],
     };
   }
 
@@ -19,14 +24,28 @@ export default class JobForm extends PureComponent {
     });
   };
 
+  handleKeywordChange = (index, event) => {
+    const { name, value } = event.target;
+    const motsclés = [...this.state.motsclés];
+    motsclés[index][name] = value;
+    this.setState({ motsclés });
+  };
+
+  handleAddKeyword = () => {
+    this.setState({
+      motsclés: [...this.state.motsclés, { tag: "", score: 0 }],
+    });
+  };
+
   handleSubmit = async (event) => {
     event.preventDefault();
-    const { jobName, jobDescription } = this.state;
+    const { jobName, jobDescription, motsclés } = this.state;
 
     try {
       const response = await axios.post("http://localhost:8080/api/emploi", {
         jobName,
         jobDescription,
+        motsclés: JSON.stringify(motsclés),
       });
       if (response.status >= 200 && response.status < 300) {
         console.log("Emploi soumis avec succès !");
@@ -39,6 +58,7 @@ export default class JobForm extends PureComponent {
         this.setState({
           jobName: "",
           jobDescription: "",
+          motsclés: [{ tag: "", score: 0 }],
         });
       } else {
         console.error(
@@ -52,9 +72,10 @@ export default class JobForm extends PureComponent {
 
   render() {
     return (
-      <div className="max-w-xl mx-auto p-4 bg-white shadow-md rounded-lg ml-32">
+      <div className="max-w-2xl mx-auto p-8 ml-80 bg-white shadow-md rounded-lg">
         <ToastContainer />
-        <form onSubmit={this.handleSubmit} className="space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-700 mb-6">Ajouter une offre d'emploi</h2>
+        <form onSubmit={this.handleSubmit} className="space-y-6">
           <div>
             <label
               htmlFor="jobName"
@@ -69,7 +90,7 @@ export default class JobForm extends PureComponent {
               value={this.state.jobName}
               onChange={this.handleInputChange}
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Titre de l'emploi"
             />
           </div>
@@ -88,14 +109,44 @@ export default class JobForm extends PureComponent {
               onChange={this.handleInputChange}
               required
               rows="4"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Description de l'emploi"
             ></textarea>
           </div>
 
+          <div className="space-y-4">
+            {this.state.motsclés.map((el, i) => (
+              <div key={i} className="flex space-x-4">
+                <input
+                  type="text"
+                  name="tag"
+                  value={el.tag}
+                  onChange={(e) => this.handleKeywordChange(i, e)}
+                  placeholder="Tag"
+                  className="mt-1 block w-1/2 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+                <input
+                  type="number"
+                  name="score"
+                  value={el.score}
+                  onChange={(e) => this.handleKeywordChange(i, e)}
+                  placeholder="Score"
+                  className="mt-1 block w-1/2 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={this.handleAddKeyword}
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Ajouter un mot-clé
+            </button>
+          </div>
+
           <button
             type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             Soumettre
           </button>

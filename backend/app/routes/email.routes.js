@@ -3,9 +3,11 @@ const router = express.Router();
 const sendEmail = require('../nodemailer');
 
 router.post('/send-email', async (req, res) => {
-  const { to, subject, html } = req.body;
+  const { to, subject, html , interviewDate} = req.body;
+  console.log("Email route hit with data:", { to, subject, html, interviewDate });
+
   try {
-    await sendEmail(to, subject, html);
+    await sendEmail(to, subject, html , interviewDate);
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
     console.error('Error sending email:', error);

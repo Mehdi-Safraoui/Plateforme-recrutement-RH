@@ -29,4 +29,6 @@ router.put('/candidates/:id/accept', Controller.acceptCandidate);
 // Route to reject a candidate
 router.put('/candidates/:id/reject', Controller.rejectCandidate);
 
+
+
 module.exports = router;

@@ -1,7 +1,13 @@
 module.exports = (sequelize, Sequelize) => {
 const Offre = sequelize.define("offres", {
-
- 
+iduser: {
+  type: Sequelize.INTEGER,
+  allowNull: false
+},
+idemploi: {
+  type: Sequelize.INTEGER,
+  allowNull: false
+},
   email: {
     type: Sequelize.STRING,
     allowNull: false
@@ -29,6 +35,11 @@ const Offre = sequelize.define("offres", {
     type: Sequelize.STRING,
     allowNull: false
   },
+ score: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+    defaultValue: "0"
+  },
   jobName : {
     type: Sequelize.STRING,
           allowNull: true
@@ -38,9 +49,20 @@ etat: {
     allowNull: false,
     defaultValue: 'Non traité' // Default value set here
   }
-
  
 });
+Offre.associate = models => {
+  Offre.belongsTo(models.User, {
+    foreignKey: 'iduser',
+    onDelete: 'RESTRICT',
+    onUpdate: 'RESTRICT'
+  });
+  Offre.belongsTo(models.Emploi, {
+    foreignKey: 'idemploi',
+    onDelete: 'RESTRICT',
+    onUpdate: 'RESTRICT'
+  });
+};
 
 return  Offre;
 };

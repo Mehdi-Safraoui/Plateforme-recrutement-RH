@@ -72,9 +72,7 @@ export default function SignUp() {
       // Traitez la réponse du serveur ou redirigez l'utilisateur vers une autre page si nécessaire
     } catch (error) {
       console.error("Erreur lors de la requête:", error.response.data.message);
-      setEmailError(error.response.data.message);
       toast.error(
-        "Erreur lors de la création de l'utilisateur: " +
           error.response.data.message,
         {
           position: "top-right",

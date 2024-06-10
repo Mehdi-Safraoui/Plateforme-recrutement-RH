@@ -41,6 +41,10 @@ const JobDetails = () => {
 
     try {
       const formDataToSend = new FormData();
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      formDataToSend.append("iduser", user.id); // ID de l'utilisateur
+      formDataToSend.append("idemploi", id);
       formDataToSend.append("email", formData.email);
       formDataToSend.append("first_name", formData.first_name);
       formDataToSend.append("last_name", formData.last_name);
@@ -74,6 +78,8 @@ const JobDetails = () => {
       }
     }
   };
+
+  
 
   const handleFileChange = (e) => {
     setFormData({ ...formData, cv: e.target.files[0] });

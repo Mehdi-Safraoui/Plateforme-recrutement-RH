@@ -1,0 +1,13 @@
+{
+    "web": {
+        "client_id": "724717874722-jhh1riji7hhmq2m0sj16i1lke97nm4l5.apps.googleusercontent.com",
+        "project_id": "platforme-rh",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "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",
+        "redirect_uris": [
+            "https://accounts.google.com/o/oauth2/auth"
+        ]
+    }
+}

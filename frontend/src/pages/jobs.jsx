@@ -49,12 +49,12 @@ export default class Jobs extends Component {
 
     return (
       <div className="text-center">
-        <h1 className="text-2xl font-bold">Liste des emplois</h1>
-        <ul className="list-none p-0">
+        <h1 className="text-2xl font-bold">Liste des emplois :</h1>
+        <ul className="list-none mt-16">
           {jobs.map((emploi) => (
             <li key={emploi.id} className="text-left mx-auto my-5 p-5 border border-gray-300 rounded-lg max-w-md relative">
-              <h2 className="font-bold text-xl">{emploi.jobName}</h2>
-              <button className="absolute top-1/2 right-5 transform -translate-y-1/2 bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-md">
+              <h2 className="font-bold">{emploi.jobName}</h2>
+              <button className="absolute top-1/2 right-1 transform -translate-y-1/2 bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-md">
                 <Link to={`/jobdetails/${emploi.id}`} className="no-underline text-white ">
                   Plus d'informations
                 </Link>

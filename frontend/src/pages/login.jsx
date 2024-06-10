@@ -3,6 +3,7 @@ import authService from "../services/auth-service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -42,41 +43,36 @@ export default function Login() {
         <div className="mb-5">
           <label
             htmlFor="email"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white focus:outline-none hover:text-blue-600"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Email
           </label>
           <input
             type="email"
             id="email"
-            name="email"
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:border-2"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="nom@gmail.com"
+            required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-
         <div className="mb-5">
           <label
             htmlFor="password"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white focus:outline-none hover:text-blue-600"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Mot de passe
           </label>
           <input
             type="password"
             id="password"
-            name="password"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:border-2"
-            placeholder="Mot de passe"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        {/* <a target="_blank" href="http://localhost:8080/assets/1715340374423-846875051-Koussay-B%C3%83%C2%A8jaoui.pdf"> open cv </a> */}
 
         <button
           type="submit"

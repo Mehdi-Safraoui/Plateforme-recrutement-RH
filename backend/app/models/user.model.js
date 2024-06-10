@@ -1,5 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define("users", {
+    
     email: {
       type: Sequelize.STRING
     },
@@ -19,6 +20,13 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING
     }
   });
+  User.associate = models => {
+    User.hasMany(models.Offre, {
+      foreignKey: 'iduser',
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT'
+    });
+  };
 
   return User;
 };
